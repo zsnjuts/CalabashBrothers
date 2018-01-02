@@ -1,16 +1,24 @@
 package nju.zs;
 
-import nju.zs.creature.badcharacter.BadCharacter;
-import nju.zs.creature.goodcharacter.GoodCharacter;
-import nju.zs.layout.ChangsheLayout;
-import nju.zs.layout.Layout;
-import nju.zs.layout.Queue;
+import javax.swing.*;
 
-public class Main {
+public final class Main extends JFrame {
+
+	public Main(){
+		initUI();
+	}
+
+	public void initUI(){
+		Field field = new Field();
+		add(field);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(field.getBoardWidth(), field.getBoardHeight());
+		setLocationRelativeTo(null);
+		setTitle("葫芦兄弟");
+	}
+
 	public static void main(String[] args){
-		Queue geniesQueue = new Queue(BadCharacter.getGenies());
-		Layout layout = new ChangsheLayout();
-		layout.place(geniesQueue);
-		geniesQueue.printAll();
+		Main game = new Main();
+		game.setVisible(true);
 	}
 }

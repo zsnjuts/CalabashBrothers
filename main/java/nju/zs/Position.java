@@ -1,5 +1,7 @@
 package nju.zs;
 
+import nju.zs.creature.Creature;
+
 public class Position {
 
 	public Position(int x, int y){
@@ -29,11 +31,11 @@ public class Position {
 		this.empty = true;
 	}
 
-	public Thing2D getHolder() {
+	public Creature getHolder() {
 		return holder;
 	}
 
-	public void setHolder(Thing2D holder) {
+	public void setHolder(Creature holder) {
 		this.holder = holder;
 		this.empty = false;
 	}
@@ -41,5 +43,5 @@ public class Position {
 	private int x;
 	private int y;
 	private boolean empty;
-	private Thing2D holder;
+	private Creature holder;
 }
