@@ -9,25 +9,26 @@ import nju.zs.layout.ChangsheLayout;
 import nju.zs.layout.Layout;
 import nju.zs.layout.Queue;
 import nju.zs.layout.YanxingLayout;
+import nju.zs.replay.Recorder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class Field extends JPanel {
 	private static BufferedImage background;
-	private static String recordFileName = "game.rcd";
 	static{
 		try {
 			background = ImageIO.read(new File("src/main/resources/background.jpg"));
@@ -36,25 +37,26 @@ public class Field extends JPanel {
 		}
 	}
 
+	private boolean running = false;
+	private boolean showing = false;
 	private Room room = new Room();
-	private java.util.Timer timer = new Timer();
-	private ExecutorService exec = Executors.newCachedThreadPool();
+	private Timer timer;
+	private ExecutorService exec;
+	private Recorder recorder = new Recorder(room);
 
 	public Field(){
 		setFocusable(true);
 		addKeyListener(new KAdapter());
 		addMouseListener(new MAdapter());
 
-		initRecord();
 		loadRoom();
-		beginTimer();
-		startThreads();
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		showRoom(g);
+		System.out.println("repaint");
 	}
 
 	public int getBoardWidth() {
@@ -65,10 +67,42 @@ public class Field extends JPanel {
 		return background.getHeight();
 	}
 
-	private void initRecord(){
-		File record = new File(recordFileName);
-		if(record.exists())
-			record.delete();
+	class KAdapter extends KeyAdapter{
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(showing)
+				return;
+
+			int key = e.getKeyCode();
+			if(key==KeyEvent.VK_SPACE){
+				if(!running) {
+					running = true;
+					beginGame();
+				} else {
+					running = false;
+					stopGame();
+				}
+			} else if (key==KeyEvent.VK_L && !running){
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("."));
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Record Files", "rcd"));
+				int ret = fileChooser.showOpenDialog(getParent());
+				if(ret==JFileChooser.APPROVE_OPTION) {
+					System.out.println("open " + fileChooser.getSelectedFile().getName());
+					Player player = new Player(fileChooser.getSelectedFile().getName());
+					new Thread(player).start(); //由于repaint只能在子线程调用有效，所以需要额外开一个子线程
+				}
+			}
+		}
+	}
+
+	class MAdapter extends MouseAdapter{
+		@Override
+		public void mouseClicked(MouseEvent e){
+			if(showing)
+				return;
+			System.out.println(e);
+		}
 	}
 
 	private void loadRoom(){
@@ -79,37 +113,73 @@ public class Field extends JPanel {
 		room.addCreature(new SnakeGenie(new Position(0,0)), 500, background.getHeight());
 	}
 
-	private void beginTimer(){
+	private void beginGame(){
+		recorder.beginRecord();
+		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				repaint();
+				recorder.record();
 			}
-		}, 0, 50);
-	}
-
-	private void startThreads(){
+		}, 0, 1000);
+		exec = Executors.newCachedThreadPool();
 		for(Creature ct:room.getCreatures())
 			exec.execute(ct);
 	}
 
+	private void stopGame(){
+		recorder.stopRecord();
+		timer.cancel();
+		exec.shutdownNow();
+	}
+
 	private void showRoom(Graphics g){
 		g.drawImage(background, 0, 0, this);
-		for(Creature ct:room.getCreatures())
+		for(Thing2D ct:room.getThings())
 			g.drawImage(ct.getImageIcon().getImage(), ct.x(), ct.y() - ct.getImageIcon().getIconHeight(), this);
 	}
 
-	class KAdapter extends KeyAdapter{
-		@Override
-		public void keyPressed(KeyEvent e) {
-			System.out.println(e);
+	/* 用于重现游戏 */
+	class Player implements Runnable{
+		private String recordFileName;
+		public Player(String recordFileName){
+			this.recordFileName = recordFileName;
 		}
-	}
+		public void run(){
+			showing = true;
+			File recordFile = new File(recordFileName);
+			try {
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(recordFile));
+				long begin = System.currentTimeMillis();
+				while(true){
+					String recordInfoLine = bufferedReader.readLine();
+					if(recordInfoLine==null)
+						break;
 
-	class MAdapter extends MouseAdapter{
-		@Override
-		public void mouseClicked(MouseEvent e){
-			System.out.println(e);
+					String[] recordInfo = recordInfoLine.split(" ");
+					long timeOffset = Long.valueOf(recordInfo[0]); //时间
+					int size = Integer.valueOf(recordInfo[1]); //记录的Thing2D数
+					for(int i=0;i<size;i++) {
+						String[] thingInfo = bufferedReader.readLine().split(" ");
+						int x = Integer.valueOf(thingInfo[1]); //坐标x
+						int y = Integer.valueOf(thingInfo[2]); //坐标y
+						for (Thing2D t : room.getThings())
+							if (thingInfo[0].equals(t.toString())) {
+								t.setPosition(x, y);
+								break;
+							}
+					}
+
+					while(System.currentTimeMillis()-begin<timeOffset)
+						;
+					repaint();
+					System.out.println("repainted");
+				}
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+			showing = false;
 		}
 	}
 }

@@ -2,6 +2,7 @@ package nju.zs.creature.goodcharacter;
 
 import nju.zs.Position;
 import nju.zs.creature.Creature;
+import nju.zs.creature.badcharacter.BadCharacter;
 
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;
@@ -18,11 +19,14 @@ public class GoodCharacter extends Creature {
 	public void run(){
 		try{
 			while(true){
-				this.position.setPosition(x() + 1, y());
-				TimeUnit.MILLISECONDS.sleep(50);
+				for(Creature ct:room.getCreatures())
+					if(ct instanceof BadCharacter)
+						this.moveTo(ct.getPosition());
+				TimeUnit.MILLISECONDS.sleep(1000);
 			}
 		}catch (Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println(this+"已暂停");
 		}
 	}
 

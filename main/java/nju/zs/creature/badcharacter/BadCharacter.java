@@ -2,6 +2,7 @@ package nju.zs.creature.badcharacter;
 
 import nju.zs.Position;
 import nju.zs.creature.Creature;
+import nju.zs.creature.goodcharacter.GoodCharacter;
 
 import javax.swing.*;
 import java.util.Random;
@@ -21,18 +22,22 @@ public class BadCharacter extends Creature {
 		try{
 			Random random = new Random();
 			while(true){
-				switch (random.nextInt()%6) {
-					case 0: break; //不动
-					case 1:
-					case 2: this.position.setPosition(x()-5, y()); break; //左
-					case 3: this.position.setPosition(x()+5, y()); break; //右
-					case 4: this.position.setPosition(x(), y()-5); break; //上
-					case 5: this.position.setPosition(x(), y()+5); break; //下
-				}
-				TimeUnit.MILLISECONDS.sleep(200);
+//				switch (random.nextInt()%6) {
+//					case 0: break; //不动
+//					case 1:
+//					case 2: this.position.setPosition(x()-5, y()); break; //左
+//					case 3: this.position.setPosition(x()+5, y()); break; //右
+//					case 4: this.position.setPosition(x(), y()-5); break; //上
+//					case 5: this.position.setPosition(x(), y()+5); break; //下
+//				}
+				for(Creature ct:room.getCreatures())
+					if(ct instanceof GoodCharacter)
+						this.moveTo(ct.getPosition());
+				TimeUnit.MILLISECONDS.sleep(1000);
 			}
 		}catch (Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println(this+"已暂停");
 		}
 	}
 
