@@ -24,6 +24,10 @@ public class Room {
 		things.add(creature);
 	}
 
+	public void addThing(Thing2D thing){
+		things.add(thing);
+	}
+
 	public ArrayList<Creature> getCreatures(){
 		return creatures;
 	}

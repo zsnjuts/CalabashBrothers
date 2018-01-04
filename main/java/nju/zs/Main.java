@@ -10,10 +10,11 @@ public final class Main extends JFrame {
 
 	public void initUI(){
 		Field field = new Field();
-		add(field);
+		setContentPane(field);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(field.getBoardWidth(), field.getBoardHeight());
 		setLocationRelativeTo(null);
+		setResizable(false);
 		setTitle("葫芦兄弟");
 	}
 

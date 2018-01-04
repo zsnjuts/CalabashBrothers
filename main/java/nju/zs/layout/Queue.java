@@ -16,8 +16,8 @@ public class Queue {
 		return offsety;
 	}
 
-	private int offsetx = 70;
-	private int offsety = 30;
+	private int offsetx = 50;
+	private int offsety = 50;
 
 	public Queue(Creature[] creatures){
 		queuePositions = new ArrayList<Position>();

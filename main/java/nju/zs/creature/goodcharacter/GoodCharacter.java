@@ -1,11 +1,17 @@
 package nju.zs.creature.goodcharacter;
 
 import nju.zs.Position;
+import nju.zs.Room;
+import nju.zs.creature.Attack;
 import nju.zs.creature.Creature;
 import nju.zs.creature.badcharacter.BadCharacter;
+import nju.zs.creature.badcharacter.Goblin;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.lang.Math;
 
 public class GoodCharacter extends Creature {
 
@@ -16,21 +22,23 @@ public class GoodCharacter extends Creature {
 		return boys;
 	}
 
-	public void run(){
-		try{
-			while(true){
-				for(Creature ct:room.getCreatures())
-					if(ct instanceof BadCharacter)
-						this.moveTo(ct.getPosition());
-				TimeUnit.MILLISECONDS.sleep(1000);
-			}
-		}catch (Exception e){
-//			e.printStackTrace();
-			System.out.println(this+"已暂停");
-		}
-	}
-
 	public GoodCharacter(Position position, ImageIcon icon){
 		super(position, icon);
 	}
+
+	protected void refresh(){
+		ArrayList<Creature> creatures = room.getCreatures();
+		Creature tgt = null;
+		int dist = Integer.MAX_VALUE;
+		for(Creature ct:creatures)
+			if(ct!=this && (ct instanceof BadCharacter) && this.distanceTo(ct.getPosition())<dist){
+				tgt = ct;
+				dist = this.distanceTo(tgt.getPosition());
+			}
+		System.out.println(tgt+" "+creatures.size());
+		if(tgt!=null)
+			this.moveTowards(tgt.getPosition());
+	}
+
+	private ArrayList<Attack> attacks = new ArrayList<>();
 }

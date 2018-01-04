@@ -5,10 +5,7 @@ import nju.zs.creature.badcharacter.BadCharacter;
 import nju.zs.creature.badcharacter.SnakeGenie;
 import nju.zs.creature.goodcharacter.GoodCharacter;
 import nju.zs.creature.goodcharacter.Grandpa;
-import nju.zs.layout.ChangsheLayout;
-import nju.zs.layout.Layout;
-import nju.zs.layout.Queue;
-import nju.zs.layout.YanxingLayout;
+import nju.zs.layout.*;
 import nju.zs.replay.Recorder;
 
 import javax.imageio.ImageIO;
@@ -31,7 +28,7 @@ public class Field extends JPanel {
 	private static BufferedImage background;
 	static{
 		try {
-			background = ImageIO.read(new File("src/main/resources/background.jpg"));
+			background = ImageIO.read(new File("src/main/resources/background.png"));
 		}catch (IOException e){
 			e.printStackTrace();
 		}
@@ -56,7 +53,6 @@ public class Field extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		showRoom(g);
-		System.out.println("repaint");
 	}
 
 	public int getBoardWidth() {
@@ -64,7 +60,7 @@ public class Field extends JPanel {
 	}
 
 	public int getBoardHeight() {
-		return background.getHeight();
+		return background.getHeight()+35;
 	}
 
 	class KAdapter extends KeyAdapter{
@@ -107,8 +103,8 @@ public class Field extends JPanel {
 
 	private void loadRoom(){
 		//生成葫芦七兄弟、老爷爷和蝎子精小喽啰、蛇精，并加入二维空间
-		room.addQueue(new ChangsheLayout().place(new Queue(GoodCharacter.getBrothers())), 0, 100);
-		room.addQueue(new YanxingLayout().place(new Queue(BadCharacter.getGenies())), 400, 200);
+		room.addQueue(new YanxingLayout().place(new Queue(GoodCharacter.getBrothers())), 30, 400);
+		room.addQueue(new ChangsheLayout().place(new Queue(BadCharacter.getGenies())), 500, 400);
 		room.addCreature(new Grandpa(new Position(0,0)), 200, background.getHeight());
 		room.addCreature(new SnakeGenie(new Position(0,0)), 500, background.getHeight());
 	}
@@ -136,8 +132,10 @@ public class Field extends JPanel {
 
 	private void showRoom(Graphics g){
 		g.drawImage(background, 0, 0, this);
-		for(Thing2D ct:room.getThings())
-			g.drawImage(ct.getImageIcon().getImage(), ct.x(), ct.y() - ct.getImageIcon().getIconHeight(), this);
+		synchronized (room) {
+			for (Thing2D ct : room.getThings())
+				g.drawImage(ct.getImageIcon().getImage(), ct.x(), ct.y() - ct.getImageIcon().getIconHeight(), this);
+		}
 	}
 
 	/* 用于重现游戏 */

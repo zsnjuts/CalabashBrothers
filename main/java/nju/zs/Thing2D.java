@@ -37,6 +37,10 @@ public class Thing2D {
 		return icon.getIconHeight();
 	}
 
+	public int distanceTo(Position p){
+		return Math.abs(p.getX()-this.x())+Math.abs(p.getY()-this.y());
+	}
+
 	protected Position position;
 	protected ImageIcon icon;
 }
