@@ -27,6 +27,9 @@ public class Thing2D {
 		this.position.setPosition(x, y);
 	}
 
+	public void setImageIcon(ImageIcon icon){
+		this.icon = icon;
+	}
 	public ImageIcon getImageIcon() {
 		return this.icon;
 	}

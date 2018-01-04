@@ -34,6 +34,10 @@ public class Field extends JPanel {
 		}
 	}
 
+	public static int getBackGroundWidth(){
+		return background.getWidth();
+	}
+
 	private boolean running = false;
 	private boolean showing = false;
 	private Room room = new Room();

@@ -40,6 +40,11 @@ public class Position {
 		this.empty = false;
 	}
 
+	@Override
+	public String toString() {
+		return "("+x+","+y+")";
+	}
+
 	private int x;
 	private int y;
 	private boolean empty;

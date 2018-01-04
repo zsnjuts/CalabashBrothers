@@ -12,7 +12,7 @@ public class ScorpionGenie extends BadCharacter {
 
 	@Override
 	protected void fight() {
-
+		System.out.println(this+" FIGHTING");
 	}
 
 	@Override

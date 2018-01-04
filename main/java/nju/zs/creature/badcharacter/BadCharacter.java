@@ -22,7 +22,8 @@ public abstract class BadCharacter extends Creature {
 
 	protected void move(){
 		CheckStatus checkStatus = CheckStatus.NORMAL;
-		switch (new Random().nextInt()%5){
+		int x = -1;
+		switch (x=new Random().nextInt(5)){
 			case 0:
 			case 1: checkStatus = this.moveAStep(Direction.LEFT); break;
 			case 2: checkStatus = this.moveAStep(Direction.RIGHT); break;
@@ -30,9 +31,12 @@ public abstract class BadCharacter extends Creature {
 			case 4: checkStatus = this.moveAStep(Direction.DOWN); break;
 			default: ;
 		}
-		if(checkStatus==CheckStatus.ENEMY)
-			this.status = Status.FIGHTING;
-		System.out.println(this+" "+checkStatus);
+	}
+
+	private static ImageIcon badDeadIcon = new ImageIcon("src/main/resources/badDead.png");
+	@Override
+	protected void dead() {
+		this.setImageIcon(badDeadIcon);
 	}
 
 	public BadCharacter(Position position, ImageIcon icon){

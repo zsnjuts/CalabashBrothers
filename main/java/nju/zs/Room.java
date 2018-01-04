@@ -4,6 +4,7 @@ import nju.zs.creature.Creature;
 import nju.zs.layout.Queue;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 
 public class Room {
 
@@ -37,6 +38,15 @@ public class Room {
 		return things;
 	}
 
+	public void setExec(ExecutorService exec) {
+		this.exec = exec;
+	}
+
+	public void addThread(Runnable runnable){
+		exec.execute(runnable);
+	}
+
 	private ArrayList<Creature> creatures = new ArrayList<Creature>();
 	private ArrayList<Thing2D> things = new ArrayList<Thing2D>();
+	private ExecutorService exec;
 }

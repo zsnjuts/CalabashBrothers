@@ -15,13 +15,8 @@ public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy
 		this.seniority = seniority;
 	}
 
-	private Attack attack = null;
 	@Override
 	protected void fight() {
-		if(attack==null)
-			attack = new Attack(new Position(this.x()+this.getWidth(), this.y()+this.getHeight()-10));
-		else
-			attack.move();
 	}
 
 	public int compareTo(CalabashBoy o) {

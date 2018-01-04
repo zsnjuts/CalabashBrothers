@@ -31,12 +31,19 @@ public abstract class GoodCharacter extends Creature {
 		Creature tgt = null;
 		int dist = Integer.MAX_VALUE;
 		for(Creature ct:creatures)
-			if(ct!=this && (ct instanceof BadCharacter) && this.distanceTo(ct.getPosition())<dist){
+			if(ct!=this && (ct instanceof BadCharacter) && ct.getStatus()==Status.RUNNING && this.distanceTo(ct.getPosition())<dist){
 				tgt = ct;
 				dist = this.distanceTo(tgt.getPosition());
 			}
-		if(tgt!=null && this.moveTowards(tgt.getPosition())==CheckStatus.ENEMY)
-			this.status = Status.FIGHTING;
+		System.out.println(this+"target:"+tgt);
+		if(tgt!=null)
+			this.moveTowards(tgt.getPosition());
+	}
+
+	private static ImageIcon goodDeadIcon = new ImageIcon("src/main/resources/goodDead.png");
+	@Override
+	protected void dead() {
+		this.setImageIcon(goodDeadIcon);
 	}
 
 	private ArrayList<Attack> attacks = new ArrayList<>();
