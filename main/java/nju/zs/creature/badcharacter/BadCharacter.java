@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class BadCharacter extends Creature {
+public abstract class BadCharacter extends Creature {
 
 	public static BadCharacter[] getGenies(){
 		BadCharacter[] genies = new BadCharacter[8];
@@ -20,16 +20,19 @@ public class BadCharacter extends Creature {
 		return genies;
 	}
 
-	protected void refresh(){
-//		switch (new Random().nextInt()%5){
-//			case 0:
-//			case 1: this.moveAStep(Direction.LEFT); break;
-//			case 2: this.moveAStep(Direction.RIGHT); break;
-//			case 3: this.moveAStep(Direction.UP); break;
-//			case 4: this.moveAStep(Direction.DOWN); break;
-//			default: ;
-//		}
-		this.moveAStep(Direction.LEFT);
+	protected void move(){
+		CheckStatus checkStatus = CheckStatus.NORMAL;
+		switch (new Random().nextInt()%5){
+			case 0:
+			case 1: checkStatus = this.moveAStep(Direction.LEFT); break;
+			case 2: checkStatus = this.moveAStep(Direction.RIGHT); break;
+			case 3: checkStatus = this.moveAStep(Direction.UP); break;
+			case 4: checkStatus = this.moveAStep(Direction.DOWN); break;
+			default: ;
+		}
+		if(checkStatus==CheckStatus.ENEMY)
+			this.status = Status.FIGHTING;
+		System.out.println(this+" "+checkStatus);
 	}
 
 	public BadCharacter(Position position, ImageIcon icon){

@@ -31,7 +31,7 @@ public class Position {
 		this.empty = true;
 	}
 
-	public Creature getHolder() {
+	public Thing2D getHolder() {
 		return holder;
 	}
 
@@ -43,5 +43,5 @@ public class Position {
 	private int x;
 	private int y;
 	private boolean empty;
-	private Creature holder;
+	private Thing2D holder;
 }

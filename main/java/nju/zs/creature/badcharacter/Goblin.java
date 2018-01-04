@@ -13,6 +13,11 @@ public class Goblin extends BadCharacter {
 	}
 
 	@Override
+	protected void fight() {
+
+	}
+
+	@Override
 	public String toString() {
 		return "喽啰"+id;
 	}

@@ -10,9 +10,10 @@ public class Room {
 	public void addQueue(Queue queue, int beginX, int beginY){
 		ArrayList<Position> queuePositions = queue.getQueuePositions();
 		for(Position p:queuePositions){
-			p.getHolder().setPosition(beginX + p.getX(), beginY + p.getY());
-			p.getHolder().setRoom(this);
-			creatures.add(p.getHolder());
+			Creature ct = (Creature)p.getHolder();
+			ct.setPosition(beginX + p.getX(), beginY + p.getY());
+			ct.setRoom(this);
+			creatures.add((Creature)p.getHolder());
 			things.add(p.getHolder());
 		}
 	}

@@ -12,6 +12,11 @@ public class Grandpa extends GoodCharacter {
 	}
 
 	@Override
+	protected void fight() {
+
+	}
+
+	@Override
 	public String toString() {
 		return "爷爷";
 	}

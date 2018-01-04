@@ -14,6 +14,6 @@ public class Attack extends Thing2D {
 	}
 
 	public void move(){
-		this.setPosition(this.x()+20, this.y());
+		this.setPosition(this.x()+10, this.y());
 	}
 }

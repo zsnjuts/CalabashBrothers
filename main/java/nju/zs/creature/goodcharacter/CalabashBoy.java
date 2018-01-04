@@ -1,6 +1,7 @@
 package nju.zs.creature.goodcharacter;
 
 import nju.zs.Position;
+import nju.zs.creature.Attack;
 
 import javax.swing.*;
 
@@ -12,6 +13,15 @@ public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy
 		super(position, calabashBoyIcon);
 		this.color = color;
 		this.seniority = seniority;
+	}
+
+	private Attack attack = null;
+	@Override
+	protected void fight() {
+		if(attack==null)
+			attack = new Attack(new Position(this.x()+this.getWidth(), this.y()+this.getHeight()-10));
+		else
+			attack.move();
 	}
 
 	public int compareTo(CalabashBoy o) {

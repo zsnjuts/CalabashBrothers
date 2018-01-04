@@ -118,7 +118,7 @@ public class Field extends JPanel {
 				repaint();
 				recorder.record();
 			}
-		}, 0, 1000);
+		}, 0, 100);
 		exec = Executors.newCachedThreadPool();
 		for(Creature ct:room.getCreatures())
 			exec.execute(ct);

@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
-public class GoodCharacter extends Creature {
+public abstract class GoodCharacter extends Creature {
 
 	public static CalabashBoy[] getBrothers(){
 		CalabashBoy[] boys = new CalabashBoy[7];
@@ -26,7 +26,7 @@ public class GoodCharacter extends Creature {
 		super(position, icon);
 	}
 
-	protected void refresh(){
+	protected void move(){
 		ArrayList<Creature> creatures = room.getCreatures();
 		Creature tgt = null;
 		int dist = Integer.MAX_VALUE;
@@ -35,9 +35,8 @@ public class GoodCharacter extends Creature {
 				tgt = ct;
 				dist = this.distanceTo(tgt.getPosition());
 			}
-		System.out.println(tgt+" "+creatures.size());
-		if(tgt!=null)
-			this.moveTowards(tgt.getPosition());
+		if(tgt!=null && this.moveTowards(tgt.getPosition())==CheckStatus.ENEMY)
+			this.status = Status.FIGHTING;
 	}
 
 	private ArrayList<Attack> attacks = new ArrayList<>();
