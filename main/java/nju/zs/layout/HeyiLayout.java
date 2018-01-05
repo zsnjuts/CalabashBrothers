@@ -12,7 +12,7 @@ public class HeyiLayout implements Layout {
 			if(i%2==0)
 				queuePositions.get(i).setPosition(i/2*offsetx, i/2*offsety);
 			else
-				queuePositions.get(i).setPosition(i/2*offsetx, (queuePositions.size()-1-i/2)*offsety);//(queuePositions.size()-1-i/2)*offsetx, i/2*offsety
+				queuePositions.get(i).setPosition(i/2*offsetx, (queuePositions.size()-1-i/2)*offsety);
 		}
 		return queue;
 	}

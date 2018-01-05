@@ -89,7 +89,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 			this.setPosition(this.x() + nx, this.y() + ny);
 	}
 
-	protected final CheckStatus moveAStep(Direction d){
+	protected final void moveAStep(Direction d){
 		int nx = 0, ny = 0;
 		switch (d) {
 			case LEFT: nx -= step; break;
@@ -101,7 +101,6 @@ public abstract class Creature extends Thing2D implements Runnable {
 		CheckStatus checkStatus = checkForward(nx,ny);
 		if(checkStatus==CheckStatus.NORMAL)
 			this.setPosition(this.x() + nx, this.y() + ny);
-		return checkStatus;
 	}
 
 	protected Room room;
@@ -114,7 +113,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 	}
 
 	/* 对当前前进方向进行检测是否会与其他Creature相撞，offsetX,offsetY均为偏移量 */
-	private synchronized CheckStatus checkForward(int offsetX, int offsetY){
+	public synchronized CheckStatus checkForward(int offsetX, int offsetY){
 		boolean flag = this instanceof GoodCharacter;
 		for(Creature ct:room.getCreatures())
 			if(ct!=this && ct.getStatus()==Status.RUNNING && this.isCollidesWith(ct, offsetX, offsetY)) {
@@ -132,7 +131,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 	}
 
 	/* 新位置上是否会和指定Creature相撞 */
-	private boolean isCollidesWith(Creature ct, int offsetX, int offsetY){
+	public boolean isCollidesWith(Creature ct, int offsetX, int offsetY){
 		return this.x()+this.getWidth()>ct.x() && ct.x()+ct.getWidth()>this.x()
 				&& this.y()+10>ct.y() && ct.y()+10>this.y();
 	}
