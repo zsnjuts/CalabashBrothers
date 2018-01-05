@@ -36,7 +36,7 @@ public abstract class BadCharacter extends Creature {
 		}
 	}
 
-	private static ImageIcon badDeadIcon = new ImageIcon("src/main/resources/badDead.png");
+	private static ImageIcon badDeadIcon = new ImageIcon(BadCharacter.class.getClassLoader().getResource("badDead.png"));
 	@Override
 	protected void dead() {
 		this.setImageIcon(badDeadIcon);

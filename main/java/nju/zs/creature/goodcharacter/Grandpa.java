@@ -5,7 +5,7 @@ import nju.zs.Position;
 import javax.swing.*;
 
 public class Grandpa extends GoodCharacter {
-	private static ImageIcon grandpaIcon = new ImageIcon("src/main/resources/grandpa.png");
+	private static ImageIcon grandpaIcon = new ImageIcon(Grandpa.class.getClassLoader().getResource("grandpa.png"));
 
 	public Grandpa(Position position){
 		super(position, grandpaIcon);
@@ -22,6 +22,6 @@ public class Grandpa extends GoodCharacter {
 
 	@Override
 	public String toString() {
-		return "爷爷";
+		return "Grandpa";
 	}
 }

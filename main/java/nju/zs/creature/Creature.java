@@ -45,7 +45,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 				TimeUnit.MILLISECONDS.sleep(100);
 			}
 		}catch (Exception e){
-			System.out.println(this+"被中断，状态:"+this.status);
+			//System.out.println(this+"被中断，状态:"+this.status);
 		}
 	}
 

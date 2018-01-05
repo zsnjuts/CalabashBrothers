@@ -25,7 +25,7 @@ public class Field extends JPanel {
 	private static BufferedImage background;
 	static{
 		try {
-			background = ImageIO.read(new File("src/main/resources/background.png"));
+			background = ImageIO.read(Field.class.getClassLoader().getResource("background.png"));
 		}catch (IOException e){
 			e.printStackTrace();
 		}
@@ -80,7 +80,7 @@ public class Field extends JPanel {
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Record Files", "rcd"));
 				int ret = fileChooser.showOpenDialog(getParent());
 				if(ret==JFileChooser.APPROVE_OPTION) {
-					Player player = new Player(fileChooser.getSelectedFile().getName());
+					Player player = new Player(fileChooser.getSelectedFile());
 					new Thread(player).start(); //由于repaint只能在子线程调用有效，所以需要额外开一个子线程
 				}
 			}
@@ -126,13 +126,12 @@ public class Field extends JPanel {
 
 	/* 用于重现游戏 */
 	class Player implements Runnable{
-		private String recordFileName;
-		public Player(String recordFileName){
-			this.recordFileName = recordFileName;
+		private File recordFile;
+		public Player(File recordFile){
+			this.recordFile = recordFile;
 		}
 		public void run(){
 			showing = true;
-			File recordFile = new File(recordFileName);
 			try {
 				BufferedReader bufferedReader = new BufferedReader(new FileReader(recordFile));
 				long begin = System.currentTimeMillis();

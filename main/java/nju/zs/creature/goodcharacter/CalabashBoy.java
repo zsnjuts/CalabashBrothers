@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy> {
 
-	private static ImageIcon calabashBoyIcon = new ImageIcon("src/main/resources/calabashBoy.png");
+	private static ImageIcon calabashBoyIcon = new ImageIcon(CalabashBoy.class.getClassLoader().getResource("calabashBoy.png"));
 
 	public CalabashBoy(Color color, Seniority seniority, Position position){
 		super(position, calabashBoyIcon);
@@ -36,7 +36,7 @@ public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy
 
 	@Override
 	public String toString(){
-		return seniority.toString().substring(1)+"娃";
+		return "Boy"+(seniority.ordinal()+1);
 	}
 
 	private Color color;
@@ -44,9 +44,9 @@ public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy
 }
 
 enum Color{
-	红, 橙, 黄, 绿, 青, 蓝, 紫
+	RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE
 }
 
 enum Seniority{
-	老大, 老二, 老三, 老四, 老五, 老六, 老七
+	ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN
 }

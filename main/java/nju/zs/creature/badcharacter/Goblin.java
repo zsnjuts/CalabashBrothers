@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Goblin extends BadCharacter {
 	private static int cnt = 0;
 	private final int id = cnt++;
-	private static ImageIcon goblinIcon = new ImageIcon("src/main/resources/goblin.png");
+	private static ImageIcon goblinIcon = new ImageIcon(Goblin.class.getClassLoader().getResource("goblin.png"));
 	public Goblin(Position position){
 		super(position, goblinIcon);
 	}
@@ -24,6 +24,6 @@ public class Goblin extends BadCharacter {
 
 	@Override
 	public String toString() {
-		return "喽啰"+id;
+		return "Goblin"+id;
 	}
 }

@@ -5,7 +5,7 @@ import nju.zs.Position;
 import javax.swing.*;
 
 public class SnakeGenie extends BadCharacter {
-	private static ImageIcon snakeGenieIcon = new ImageIcon("src/main/resources/snakeGenie.png");
+	private static ImageIcon snakeGenieIcon = new ImageIcon(SnakeGenie.class.getClassLoader().getResource("snakeGenie.png"));
 	public SnakeGenie(Position position){
 		super(position, snakeGenieIcon);
 	}
@@ -22,6 +22,6 @@ public class SnakeGenie extends BadCharacter {
 
 	@Override
 	public String toString() {
-		return "蛇精";
+		return "SnakeGenie";
 	}
 }

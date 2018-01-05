@@ -43,7 +43,7 @@ public abstract class GoodCharacter extends Creature {
 			this.moveTowards(tgt.getPosition());
 	}
 
-	private static ImageIcon goodDeadIcon = new ImageIcon("src/main/resources/goodDead.png");
+	private static ImageIcon goodDeadIcon = new ImageIcon(GoodCharacter.class.getClassLoader().getResource("goodDead.png"));
 	@Override
 	protected void dead() {
 		this.setImageIcon(goodDeadIcon);
