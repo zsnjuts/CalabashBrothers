@@ -38,14 +38,6 @@ public class Room {
 		return things;
 	}
 
-	public void setExec(ExecutorService exec) {
-		this.exec = exec;
-	}
-
-	public void addThread(Runnable runnable){
-		exec.execute(runnable);
-	}
-
 	private ArrayList<Creature> creatures = new ArrayList<Creature>();
 	private ArrayList<Thing2D> things = new ArrayList<Thing2D>();
 	private ExecutorService exec;

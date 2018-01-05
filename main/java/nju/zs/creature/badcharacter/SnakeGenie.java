@@ -11,6 +11,11 @@ public class SnakeGenie extends BadCharacter {
 	}
 
 	@Override
+	public void setDefaultImageIcon() {
+		this.icon = snakeGenieIcon;
+	}
+
+	@Override
 	protected void fight() {
 
 	}

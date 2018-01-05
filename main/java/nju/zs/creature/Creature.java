@@ -3,7 +3,6 @@ package nju.zs.creature;
 import nju.zs.Position;
 import nju.zs.Room;
 import nju.zs.Thing2D;
-import nju.zs.creature.badcharacter.BadCharacter;
 import nju.zs.creature.goodcharacter.GoodCharacter;
 
 import javax.swing.*;
@@ -50,7 +49,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 		}
 	}
 
-	protected enum Status{
+	public enum Status{
 		RUNNING, FIGHTING, DEAD
 	}
 	protected Status status = Status.RUNNING;
@@ -60,6 +59,9 @@ public abstract class Creature extends Thing2D implements Runnable {
 	public Status getStatus() {
 		return status;
 	}
+	public abstract void setStatus(Status status);
+	public abstract void setDefaultImageIcon();
+
 	public void setFight(boolean flag){
 		if(flag) {
 			status = Status.RUNNING;
@@ -67,7 +69,7 @@ public abstract class Creature extends Thing2D implements Runnable {
 			status = Status.FIGHTING;
 			new java.util.Timer().schedule(new TimerTask() {
 				@Override
-				public void run() { //1秒后就变为死亡状态
+				public void run() { //500毫秒后变为死亡状态
 					status = Status.DEAD;
 				}
 			}, 500);
@@ -117,27 +119,20 @@ public abstract class Creature extends Thing2D implements Runnable {
 		for(Creature ct:room.getCreatures())
 			if(ct!=this && ct.getStatus()==Status.RUNNING && this.isCollidesWith(ct, offsetX, offsetY)) {
 				if(flag == (ct instanceof GoodCharacter)) {
-					System.out.println(this+" with "+ct);
 					this.position.setPosition(this.x()-offsetX, this.y()-offsetY);
 					return CheckStatus.FRIEND;
 				} else {
 					boolean alive = new Random().nextBoolean();
 					ct.setFight(alive);
 					this.setFight(!alive);
-					System.out.println(this+"setFight="+alive+"  "+ct+"="+!alive);
 					return CheckStatus.ENEMY;
 				}
 			}
-		System.out.println(this+"no collide");
 		return CheckStatus.NORMAL;
 	}
 
 	/* 新位置上是否会和指定Creature相撞 */
 	private boolean isCollidesWith(Creature ct, int offsetX, int offsetY){
-//		boolean flagX1 = offsetX>=0 && this.x()+this.getWidth()<=ct.x() && this.x()+this.getWidth()+offsetX>=ct.x(); //向右
-//		boolean flagX2 = offsetX<0 && this.x()>ct.x()+ct.getWidth() && this.x()+offsetX<=ct.x()+ct.getWidth(); //向左
-//		boolean flagY = Math.abs(this.y()+offsetY-ct.y())<=5;
-//		return flagY && (flagX1||flagX2);
 		return this.x()+this.getWidth()>ct.x() && ct.x()+ct.getWidth()>this.x()
 				&& this.y()+10>ct.y() && ct.y()+10>this.y();
 	}

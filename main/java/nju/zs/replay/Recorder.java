@@ -1,7 +1,7 @@
 package nju.zs.replay;
 
 import nju.zs.Room;
-import nju.zs.Thing2D;
+import nju.zs.creature.Creature;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,8 +32,8 @@ public class Recorder {
 				file.createNewFile();
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 			bufferedWriter.write(timeOffset+" "+room.getThings().size()+"\n");
-			for(Thing2D t:room.getThings())
-				bufferedWriter.write(t.toString()+" "+t.x()+" "+t.y()+"\n");
+			for(Creature t:room.getCreatures())
+				bufferedWriter.write(t.toString()+" "+t.x()+" "+t.y()+" "+(t.getStatus()!=Creature.Status.DEAD)+"\n");
 			bufferedWriter.close();
 		}catch (IOException e){
 			e.printStackTrace();

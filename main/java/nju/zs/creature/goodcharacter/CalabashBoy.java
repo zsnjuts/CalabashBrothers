@@ -1,7 +1,6 @@
 package nju.zs.creature.goodcharacter;
 
 import nju.zs.Position;
-import nju.zs.creature.Attack;
 
 import javax.swing.*;
 
@@ -13,6 +12,11 @@ public class CalabashBoy extends GoodCharacter implements Comparable<CalabashBoy
 		super(position, calabashBoyIcon);
 		this.color = color;
 		this.seniority = seniority;
+	}
+
+	@Override
+	public void setDefaultImageIcon() {
+		this.icon = calabashBoyIcon;
 	}
 
 	@Override

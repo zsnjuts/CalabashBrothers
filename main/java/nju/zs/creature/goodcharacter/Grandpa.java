@@ -12,6 +12,11 @@ public class Grandpa extends GoodCharacter {
 	}
 
 	@Override
+	public void setDefaultImageIcon() {
+		this.icon = grandpaIcon;
+	}
+
+	@Override
 	protected void fight() {
 	}
 

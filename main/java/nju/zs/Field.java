@@ -14,15 +14,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class Field extends JPanel {
 	private static BufferedImage background;
@@ -32,10 +29,6 @@ public class Field extends JPanel {
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-	}
-
-	public static int getBackGroundWidth(){
-		return background.getWidth();
 	}
 
 	private boolean running = false;
@@ -48,7 +41,6 @@ public class Field extends JPanel {
 	public Field(){
 		setFocusable(true);
 		addKeyListener(new KAdapter());
-		addMouseListener(new MAdapter());
 
 		loadRoom();
 	}
@@ -88,7 +80,6 @@ public class Field extends JPanel {
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Record Files", "rcd"));
 				int ret = fileChooser.showOpenDialog(getParent());
 				if(ret==JFileChooser.APPROVE_OPTION) {
-					System.out.println("open " + fileChooser.getSelectedFile().getName());
 					Player player = new Player(fileChooser.getSelectedFile().getName());
 					new Thread(player).start(); //由于repaint只能在子线程调用有效，所以需要额外开一个子线程
 				}
@@ -96,21 +87,12 @@ public class Field extends JPanel {
 		}
 	}
 
-	class MAdapter extends MouseAdapter{
-		@Override
-		public void mouseClicked(MouseEvent e){
-			if(showing)
-				return;
-			System.out.println(e);
-		}
-	}
-
 	private void loadRoom(){
 		//生成葫芦七兄弟、老爷爷和蝎子精小喽啰、蛇精，并加入二维空间
 		room.addQueue(new YanxingLayout().place(new Queue(GoodCharacter.getBrothers())), 30, 400);
-		room.addQueue(new ChangsheLayout().place(new Queue(BadCharacter.getGenies())), 500, 400);
+		room.addQueue(new ChangsheLayout().place(new Queue(BadCharacter.getGenies())), 700, 400);
 		room.addCreature(new Grandpa(new Position(0,0)), 200, background.getHeight());
-		room.addCreature(new SnakeGenie(new Position(0,0)), 500, background.getHeight());
+		room.addCreature(new SnakeGenie(new Position(0,0)), 700, background.getHeight());
 	}
 
 	private void beginGame(){
@@ -166,9 +148,14 @@ public class Field extends JPanel {
 						String[] thingInfo = bufferedReader.readLine().split(" ");
 						int x = Integer.valueOf(thingInfo[1]); //坐标x
 						int y = Integer.valueOf(thingInfo[2]); //坐标y
-						for (Thing2D t : room.getThings())
-							if (thingInfo[0].equals(t.toString())) {
-								t.setPosition(x, y);
+						boolean alive = Boolean.valueOf(thingInfo[3]); //活/死
+						for (Creature ct : room.getCreatures())
+							if (thingInfo[0].equals(ct.toString())) {
+								ct.setPosition(x, y);
+								if(alive)
+									ct.setStatus(Creature.Status.RUNNING);
+								else
+									ct.setStatus(Creature.Status.DEAD);
 								break;
 							}
 					}
@@ -176,7 +163,6 @@ public class Field extends JPanel {
 					while(System.currentTimeMillis()-begin<timeOffset)
 						;
 					repaint();
-					System.out.println("repainted");
 				}
 			} catch (Exception e){
 				e.printStackTrace();

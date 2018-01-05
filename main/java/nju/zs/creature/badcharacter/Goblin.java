@@ -13,6 +13,11 @@ public class Goblin extends BadCharacter {
 	}
 
 	@Override
+	public void setDefaultImageIcon() {
+		this.icon = goblinIcon;
+	}
+
+	@Override
 	protected void fight() {
 
 	}

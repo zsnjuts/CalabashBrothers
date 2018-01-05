@@ -1,17 +1,11 @@
 package nju.zs.creature.goodcharacter;
 
 import nju.zs.Position;
-import nju.zs.Room;
-import nju.zs.creature.Attack;
 import nju.zs.creature.Creature;
 import nju.zs.creature.badcharacter.BadCharacter;
-import nju.zs.creature.badcharacter.Goblin;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.lang.Math;
 
 public abstract class GoodCharacter extends Creature {
 
@@ -26,6 +20,15 @@ public abstract class GoodCharacter extends Creature {
 		super(position, icon);
 	}
 
+	@Override
+	public void setStatus(Status status) {
+		this.status = status;
+		if(this.status!=Status.DEAD)
+			this.setDefaultImageIcon();
+		else
+			this.setImageIcon(goodDeadIcon);
+	}
+
 	protected void move(){
 		ArrayList<Creature> creatures = room.getCreatures();
 		Creature tgt = null;
@@ -35,7 +38,7 @@ public abstract class GoodCharacter extends Creature {
 				tgt = ct;
 				dist = this.distanceTo(tgt.getPosition());
 			}
-		System.out.println(this+"target:"+tgt);
+
 		if(tgt!=null)
 			this.moveTowards(tgt.getPosition());
 	}
@@ -45,6 +48,4 @@ public abstract class GoodCharacter extends Creature {
 	protected void dead() {
 		this.setImageIcon(goodDeadIcon);
 	}
-
-	private ArrayList<Attack> attacks = new ArrayList<>();
 }

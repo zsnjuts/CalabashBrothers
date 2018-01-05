@@ -11,8 +11,13 @@ public class ScorpionGenie extends BadCharacter {
 	}
 
 	@Override
+	public void setDefaultImageIcon() {
+		this.icon = scorpionGenieIcon;
+	}
+
+	@Override
 	protected void fight() {
-		System.out.println(this+" FIGHTING");
+
 	}
 
 	@Override
